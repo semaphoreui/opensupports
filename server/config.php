@@ -16,3 +16,5 @@ define('MYSQL_PORT', $mysql_port);
 define('MYSQL_USER', $mysql_user);
 define('MYSQL_PASSWORD', $mysql_password);
 define('MYSQL_DATABASE', $mysql_database);
+
+error_reporting(E_ALL ^ E_DEPRECATED);

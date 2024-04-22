@@ -75,7 +75,7 @@ const config = env => {
             historyApiFallback: true,
             proxy: {
                 "/api": {
-                    target: "http://opensupports-srv:80",
+                    target: "http://localhost:8880",
                     pathRewrite: { "^/api": "" },
                     secure: false,
                     changeOrigin: true,
