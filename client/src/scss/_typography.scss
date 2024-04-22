@@ -8,7 +8,7 @@ p {
   &.-large {
     font-size: $font-size--lg;
     font-weight: bold;
-    line-height: $half-space * 3 / 2;
+    line-height: calc($half-space * 3 / 2);
   }
 
   &.-medium {
@@ -20,7 +20,7 @@ p {
   &.-small {
     font-size: $font-size--sm;
     font-weight: bold;
-    line-height: $half-space * 2 / 3;
+    line-height: calc($half-space * 2 / 3);
   }
 
   &.-smallest {
@@ -30,13 +30,13 @@ p {
 }
 
 h1 {
-  @extend .heading.-large;
+  @extend .heading, .-large;
 }
 
 h2 {
-  @extend .heading.-medium;
+  @extend .heading, .-medium;
 }
 
 h3 {
-  @extend .heading.-small;
+  @extend .heading, .-small;
 }
