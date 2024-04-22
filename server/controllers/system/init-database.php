@@ -40,7 +40,8 @@ class InitDatabaseController extends Controller {
 
     public function handler() {
         if(defined('MYSQL_HOST')) {
-            throw new RequestException(ERRORS::INIT_SETTINGS_DONE);
+            Response::respondSuccess();
+            return;
         }
 
         $dbHost = Controller::request('dbHost');
