@@ -1,0 +1,17 @@
+- name: copy code to dest
+  copy:
+    src: ../../../server
+    dest: "{{ INSTALL_DIR }}/server"
+
+
+- name: deploy config file
+  copy:
+    src: ../../../server
+    dest: "{{ INSTALL_DIR }}/server"
+
+
+- name: deploy nginx config
+  copy:
+    src: nginx.conf
+    dest: /etc/nginx/sites-enabled/cloud.semui.co.d/helpdesk.conf
+  become: True

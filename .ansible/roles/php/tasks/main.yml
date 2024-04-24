@@ -1,0 +1,16 @@
+- name: add php apt repo
+  ansible.builtin.apt_repository:
+    repo: ppa:ondrej/php
+    state: present
+
+
+- name: install php 7.4
+  apt:
+    name:
+      - php7.4
+      - php7.4-fpm
+    state: present
+    update_cache: True
+  notify: restart nginx
+
+
