@@ -76,19 +76,50 @@ abstract class Controller {
         } else {
             $user = User::getUser($session->getUserId());
 
-            if ($user->isNull() && Session::getInstance() instanceof ExternalSession) {
+            if ($session instanceof ExternalSession) {
 
-                R::exec('INSERT INTO user (id, name, signup_date, tickets, email, password, verification_token) VALUES (?, ?, ?, ?, ?, ?, ?)', [
-                    Session::getInstance()->getUserId(),
-                    'Anonymous',
-                    Date::getCurrentDate(),
-                    0,
-                    'project-' . Session::getInstance()->getUserId() . '@semui.co',
-                    Hashing::hashPassword(Hashing::generateRandomToken()),
-                    null,
-                ]);
+                $options = [
+                    'http' => [
+                        'method' => 'GET',
+                        'header' => "Cookie: semaphore=" . $session->getToken() . "\r\n" .
+                            "Content-Type: application/json\r\n"
+                    ]
+                ];
 
-                $user = User::getUser(Session::getInstance()->getUserId());
+                $response =
+                    file_get_contents(
+                        SESSION_PROVIDER_URL . '/project/' . $session->getUserId(),
+                        false,
+                        stream_context_create($options));
+
+                if ($response === false) {
+                    throw new Exception('Session validation error');
+                }
+
+                $projectInfo = json_decode($response);
+
+                if ($projectInfo === null) {
+                    throw new Exception('Session validation error');
+                }
+
+                // typeless comparison
+                if ($projectInfo->id != $session->getUserId()) {
+                    throw new Exception('Invalid user id');
+                }
+
+                if ($user->isNull()) {
+                    R::exec('INSERT INTO user (id, name, signup_date, tickets, email, password, verification_token) VALUES (?, ?, ?, ?, ?, ?, ?)', [
+                        Session::getInstance()->getUserId(),
+                        'Anonymous',
+                        Date::getCurrentDate(),
+                        0,
+                        'project-' . Session::getInstance()->getUserId() . '@semui.co',
+                        Hashing::hashPassword(Hashing::generateRandomToken()),
+                        null,
+                    ]);
+
+                    $user = User::getUser(Session::getInstance()->getUserId());
+                }
             }
 
             if($session->getTicketNumber()) $user->ticketNumber = $session->getTicketNumber();

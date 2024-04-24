@@ -16,5 +16,6 @@ define('MYSQL_PORT', $mysql_port);
 define('MYSQL_USER', $mysql_user);
 define('MYSQL_PASSWORD', $mysql_password);
 define('MYSQL_DATABASE', $mysql_database);
+define('SESSION_PROVIDER_URL', 'http://localhost:3330/api');
 
 error_reporting(E_ALL ^ E_DEPRECATED);
