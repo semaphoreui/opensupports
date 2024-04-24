@@ -11,6 +11,7 @@ const BUILD_DIR = path.join(__dirname, 'build');
 const APP_DIR = path.join(__dirname, 'src');
 
 const config = env => {
+    const v = Math.round(Math.random() * 10000000000);
     return {
         devtool: 'source-map',
         entry: {
@@ -18,8 +19,8 @@ const config = env => {
         },
         output: {
             path: BUILD_DIR,
-            filename: '[name].js',
-            publicPath: '/'
+            filename: '[name].js?v=' + v,
+            publicPath: '/helpdesk/'
         },
         module: {
             rules: [
