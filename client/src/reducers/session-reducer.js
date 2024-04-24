@@ -124,7 +124,7 @@ class SessionReducer extends Reducer {
     }
 
     onSessionChecked(state) {
-        let userData = sessionStore.getUserData();
+        let userData = sessionStore.getUserData() || {};
         let userId = sessionStore.getSessionData().userId;
 
         return _.extend({}, state, {
