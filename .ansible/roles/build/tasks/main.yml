@@ -1,0 +1,43 @@
+- name: Set nvm vars
+  include_tasks: set-nvm-vars.yml
+
+
+- name: install frontend deps
+  shell: "{{ nvm_cmd }} && npm install"
+  args:
+    chdir: "../client"
+  environment: "{{ nvm_env }}"
+
+
+
+- name: build frontend
+  shell: "{{ nvm_cmd }} && npm run build"
+  args:
+    chdir: "../client"
+  environment: "{{ nvm_env }}"
+
+
+- name: pack frontend
+  archive:
+    path: "../client/build/*"
+    dest: "../client.tar.gz"
+    format: gz
+  delegate_to: 127.0.0.1
+
+
+- name: install composer
+  shell: "php composer-setup.php"
+  args:
+    chdir: ".."
+
+- name: composer install
+  shell: "../composer.phar install"
+  args:
+    chdir: "../server"
+
+- name: pack server
+  archive:
+    path: "../server/*"
+    dest: "../server.tar.gz"
+    format: gz
+  delegate_to: 127.0.0.1

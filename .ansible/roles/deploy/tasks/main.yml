@@ -1,17 +1,42 @@
-- name: copy code to dest
-  copy:
-    src: ../../../server
+- name: remove old dir
+  file:
+    path: "{{ INSTALL_DIR }}/{{ item }}"
+    state: absent
+  with_items:
+    - "server"
+    - "client"
+
+
+- name: make dir
+  file:
+    path: "{{ INSTALL_DIR }}/{{ item }}"
+    state: directory
+  with_items:
+    - "server"
+    - "client"
+
+
+- name: deploy backend
+  unarchive:
+    src: ../server.tar.gz
     dest: "{{ INSTALL_DIR }}/server"
 
 
-- name: deploy config file
-  copy:
-    src: ../../../server
-    dest: "{{ INSTALL_DIR }}/server"
+- name: deploy frontend
+  unarchive:
+    src: ../client.tar.gz
+    dest: "{{ INSTALL_DIR }}/client"
+
+
+- name: deploy config.php
+  template:
+    src: config.php.j2
+    dest: "{{ INSTALL_DIR }}/server/config.php"
 
 
 - name: deploy nginx config
   copy:
     src: nginx.conf
-    dest: /etc/nginx/sites-enabled/cloud.semui.co.d/helpdesk.conf
+    dest: /etc/nginx/sites-available/cloud.semui.co.d/helpdesk.conf
   become: True
+  notify: restart nginx

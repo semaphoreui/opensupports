@@ -1,4 +1,4 @@
 - hosts: site
   roles:
-    - {role: php, become: True}
+#    - {role: php, become: True}
     - deploy

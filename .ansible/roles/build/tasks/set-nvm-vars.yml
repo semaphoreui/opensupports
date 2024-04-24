@@ -1,0 +1,21 @@
+- name: Get home dir
+  shell: "echo $HOME"
+  register: home_dir_res
+  changed_when: false
+  check_mode: no
+
+
+- name: Set nvm vars
+  set_fact:
+    home_dir: "{{ home_dir_res.stdout }}"
+    nvm_dir: "{{ home_dir_res.stdout }}/.nvm"
+    nvm_node_path: "{{ home_dir_res.stdout }}/.nvm/versions/node/{{ nvm_node_version }}"
+
+
+- name: Set nvm env
+  set_fact:
+    nvm_cmd: . {{ nvm_dir }}/nvm.sh
+    nvm_env:
+      PATH: "{{ nvm_node_path }}/bin:{{ ansible_env.PATH }}"
+      NVM_DIR: "{{ nvm_dir }}"
+

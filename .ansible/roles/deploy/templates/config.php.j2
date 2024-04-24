@@ -1,8 +1,11 @@
-define('MYSQL_HOST', '{{ secrets.db_host }}');
+<?php
+define('MYSQL_HOST', '{{ DB_HOST }}');
 define('MYSQL_PORT', 3306);
-define('MYSQL_USER', '{{ secrets.db_user }}');
-define('MYSQL_PASSWORD', '{{ secrets.db_pass }}');
-define('MYSQL_DATABASE', '{{ secrets.db_name }}');
-define('SESSION_PROVIDER_URL', 'https://cloud.semui.co/api');
+define('MYSQL_USER', '{{ DB_USER }}');
+define('MYSQL_PASSWORD', '{{ DB_PASS }}');
+define('MYSQL_DATABASE', '{{ DB_NAME }}');
+define('SESSION_PROVIDER_URL', '{{ SESSION_PROVIDER_URL }}');
 
 error_reporting(E_ALL ^ E_DEPRECATED);
+
+

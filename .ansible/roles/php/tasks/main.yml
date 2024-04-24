@@ -1,5 +1,5 @@
 - name: add php apt repo
-  ansible.builtin.apt_repository:
+  apt_repository:
     repo: ppa:ondrej/php
     state: present
 

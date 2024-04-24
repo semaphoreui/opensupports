@@ -1,0 +1,5 @@
+nvm_node_version: v18.14.2
+
+nvm_cmd: /bin/true
+
+nvm_env: {}

@@ -10,3 +10,6 @@ server/.fakemail
 server/apidoc
 dist/
 .env
+/composer.phar
+/client.tar.gz
+/server.tar.gz
