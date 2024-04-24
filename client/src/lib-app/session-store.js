@@ -19,7 +19,14 @@ class SessionStore {
         };
     }
 
+    isExternalSession() {
+        return document.cookie.includes("semaphore");
+    }
+
     isLoggedIn() {
+        if (this.isExternalSession()) {
+            return true;
+        }
         return !!this.getItem('userId') && !this.getItem('ticketNumber');
     }
 
@@ -99,7 +106,7 @@ class SessionStore {
             'tags': JSON.parse(this.getItem('tags')),
             'default-is-locked': this.getItem('default-is-locked'),
             'default-department-id':  this.getItem('default-department-id')
-            
+
         };
     }
 

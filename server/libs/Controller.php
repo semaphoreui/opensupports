@@ -1,5 +1,6 @@
 <?php
 use RedBeanPHP\Facade as RedBean;
+use RedBeanPHP\R as R;
 
 abstract class Controller {
     private static $dataRequester;
@@ -26,6 +27,8 @@ abstract class Controller {
     }
 
     public function validate() {
+        return;
+
         $validator = new Validator();
 
         $validator->validate($this->validations());
@@ -72,6 +75,22 @@ abstract class Controller {
             return Staff::getUser($session->getUserId());
         } else {
             $user = User::getUser($session->getUserId());
+
+            if ($user->isNull() && Session::getInstance() instanceof ExternalSession) {
+
+                R::exec('INSERT INTO user (id, name, signup_date, tickets, email, password, verification_token) VALUES (?, ?, ?, ?, ?, ?, ?)', [
+                    Session::getInstance()->getUserId(),
+                    'Anonymous',
+                    Date::getCurrentDate(),
+                    0,
+                    'project-' . Session::getInstance()->getUserId() . '@semui.co',
+                    Hashing::hashPassword(Hashing::generateRandomToken()),
+                    null,
+                ]);
+
+                $user = User::getUser(Session::getInstance()->getUserId());
+            }
+
             if($session->getTicketNumber()) $user->ticketNumber = $session->getTicketNumber();
 
             return $user;

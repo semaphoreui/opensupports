@@ -6,6 +6,7 @@ import SessionActions from 'actions/session-actions';
 import i18n from 'lib-app/i18n';
 
 import Menu from 'core-components/menu';
+import SessionStore from "../../../lib-app/session-store";
 
 class DashboardMenu extends React.Component {
     static contextTypes = {
@@ -36,7 +37,9 @@ class DashboardMenu extends React.Component {
     getMenuItems() {
         let items = this.getDashboardRoutes().map(this.getMenuItem.bind(this));
 
-        items.push(this.getCloseSessionItem());
+        if (!SessionStore.isExternalSession()) {
+            items.push(this.getCloseSessionItem());
+        }
 
         return items;
     }
@@ -72,14 +75,19 @@ class DashboardMenu extends React.Component {
     goToPathByIndex(itemIndex) {
         this.context.router.push(this.getDashboardRoutes()[itemIndex].path);
     }
-    
+
     getDashboardRoutes() {
-        return [
+        const res = [
             { path: '/dashboard', text: i18n('TICKET_LIST'), icon: 'file-text-o' },
             { path: '/dashboard/create-ticket', text: i18n('CREATE_TICKET'), icon: 'plus' },
             { path: '/dashboard/articles', text: i18n('VIEW_ARTICLES'), icon: 'book' },
-            { path: '/dashboard/edit-profile', text: i18n('EDIT_PROFILE'), icon: 'pencil' }
         ];
+
+        if (!SessionStore.isExternalSession()) {
+            res.push({ path: '/dashboard/edit-profile', text: i18n('EDIT_PROFILE'), icon: 'pencil' });
+        }
+
+        return res;
     }
 }
 
