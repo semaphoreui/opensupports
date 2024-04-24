@@ -79,11 +79,11 @@ class LanguageSelector extends React.Component {
     getLanguageList() {
         switch(this.props.type) {
             case 'supported':
-                return this.props.supportedLanguages;
+                return this.props.supportedLanguages || [];
             case 'allowed':
-                return this.props.allowedLanguages;
+                return this.props.allowedLanguages || [];
             case 'custom':
-                return this.props.customList;
+                return this.props.customList || [];
         }
     }
 }

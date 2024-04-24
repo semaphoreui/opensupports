@@ -7,13 +7,13 @@ $env['MYSQL_DATABASE'] = getenv('MYSQL_DATABASE');
 
 $env['SESSION_PROVIDER_URL'] = getenv('SESSION_PROVIDER_URL');
 
-$mysql_host       = ($env['MYSQL_HOST'])     ?: 'localhost';
-$mysql_port       = ($env['MYSQL_PORT'])     ?: '3306';
-$mysql_user       = ($env['MYSQL_USER'])     ?: 'root';
-$mysql_password   = ($env['MYSQL_PASSWORD']) ?: '';
-$mysql_database   = ($env['MYSQL_DATABASE']) ?: 'development';
+$mysql_host       = ($env['MYSQL_HOST'])     ? $env['MYSQL_HOST'] : 'localhost';
+$mysql_port       = ($env['MYSQL_PORT'])     ? $env['MYSQL_PORT'] : '3306';
+$mysql_user       = ($env['MYSQL_USER'])     ? $env['MYSQL_USER'] : 'root';
+$mysql_password   = ($env['MYSQL_PASSWORD']) ? $env['MYSQL_PASSWORD'] : '';
+$mysql_database   = ($env['MYSQL_DATABASE']) ? $env['MYSQL_DATABASE'] : 'development';
 
-$session_provider_url   = ($env['SESSION_PROVIDER_URL']) ?: 'development';
+$session_provider_url   = ($env['SESSION_PROVIDER_URL']) ? $env['SESSION_PROVIDER_URL'] : 'development';
 
 define('MYSQL_HOST', $mysql_host);
 define('MYSQL_PORT', $mysql_port);

@@ -13,22 +13,13 @@ export default {
     },
 
     init() {
-        if (sessionStore.isLoggedIn()) {
-            return {
-                type: 'INIT_CONFIGS_FULFILLED',
-                payload: {
-                    data: sessionStore.getConfigs()
-                }
-            };
-        } else {
-            return {
-                type: 'INIT_CONFIGS',
-                payload: API.call({
-                    path: '/system/get-settings',
-                    data: {}
-                })
-            };
-        }
+        return {
+            type: 'INIT_CONFIGS',
+            payload: API.call({
+                path: '/system/get-settings',
+                data: {}
+            })
+        };
     },
 
     changeLanguage(newLanguage) {
@@ -37,7 +28,7 @@ export default {
             payload: newLanguage
         };
     },
-    
+
     updateData() {
         return {
             type: 'UPDATE_DATA',
