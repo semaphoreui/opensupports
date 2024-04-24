@@ -13,7 +13,7 @@
     "npm": "^6.7.x"
   },
   "scripts": {
-    "start": "webpack-dev-server --display-reasons --display-error-details --history-api-fallback --progress --colors",
+    "start": "export NODE_OPTIONS=--openssl-legacy-provider && webpack-dev-server --display-reasons --display-error-details --history-api-fallback --progress --colors",
     "start-fixtures": "webpack-dev-server --env.FIXTURES=1",
     "build": "./node_modules/.bin/rimraf build && NODE_ENV=production ./node_modules/.bin/webpack -p --devtool none",
     "test": "export NODE_PATH=src && mocha src/lib-test/preprocessor.js --require @babel/register --recursive src/**/**/__tests__/*-test.js"
@@ -39,7 +39,7 @@
     "eslint": "^5.16.0",
     "eslint-loader": "^2.1.2",
     "express": "^4.13.1",
-    "express-http-proxy": "^0.6.0",
+    "express-http-proxy": "^1.6.0",
     "file-loader": "^4.0.0",
     "html-webpack-plugin": "^3.2.0",
     "humps": "^0.6.0",

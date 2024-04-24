@@ -9,14 +9,18 @@ const APIUtils = {
             let options = {
                 url: path,
                 method: method,
-                data: data
+                data: data,
+                headers: globalHeaders || {},
             };
-            
+
             if(!dataAsForm){
-                options.headers = {'content-type': 'application/x-www-form-urlencoded'};
+                options.headers = {
+                    ...options.headers,
+                    'content-type': 'application/x-www-form-urlencoded',
+                };
                 options.data = qs.stringify(options.data);
             }
-            
+
             axios(options)
             .then((result) => resolve(result.data))
             .catch(() => reject());
