@@ -2,7 +2,7 @@
 
 abstract class FileManager {
     private $fileName;
-    private $localPath = 'files/';
+    private $localPath = '../files/';
 
     const PERMISSION_ARTICLE = 'PERMISSION_ARTICLE';
     const PERMISSION_TICKET = 'PERMISSION_TICKET';

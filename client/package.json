@@ -15,7 +15,7 @@
   "scripts": {
     "start": "export NODE_OPTIONS=--openssl-legacy-provider && webpack-dev-server --display-reasons --display-error-details --history-api-fallback --progress --colors",
     "start-fixtures": "webpack-dev-server --env.FIXTURES=1",
-    "build": "export NODE_OPTIONS=--openssl-legacy-provider && ./node_modules/.bin/rimraf build && NODE_ENV=production ./node_modules/.bin/webpack -p --devtool none",
+    "build": "export NODE_OPTIONS=--openssl-legacy-provider && ./node_modules/.bin/rimraf build && NODE_ENV=production ./node_modules/.bin/webpack -d --devtool inline-source-map",
     "test": "export NODE_PATH=src && mocha src/lib-test/preprocessor.js --require @babel/register --recursive src/**/**/__tests__/*-test.js"
   },
   "devDependencies": {

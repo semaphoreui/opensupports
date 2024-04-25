@@ -22,7 +22,7 @@ Array.prototype.swap = function (x,y) {
     return this;
 };
 
-if (process.env.NODE_ENV !== 'production') {
+if (true || process.env.NODE_ENV !== 'production') {
     // Enable React devtools
     window.React = React;
 }

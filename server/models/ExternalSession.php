@@ -8,7 +8,7 @@ class ExternalSession {
     }
 
     public function initSession() {
-        session_id($_COOKIE['semaphore']);
+        session_id(md5($_COOKIE['semaphore']));
         session_start();
     }
 

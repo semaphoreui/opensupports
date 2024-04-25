@@ -18,8 +18,8 @@ const config = env => {
         },
         output: {
             path: BUILD_DIR,
-            filename: '[name].js',
-            publicPath: '/'
+            filename: '[name].[hash].js',
+            publicPath: '/helpdesk/'
         },
         module: {
             rules: [

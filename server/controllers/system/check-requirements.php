@@ -52,8 +52,8 @@ class CheckRequirementsController extends Controller {
             ],
             'files' => [
                 'name' => 'Folder: /api/files',
-                'value' => is_writable('files') ? 'Writable' : 'Not writable',
-                'ok' => is_writable('files')
+                'value' => is_writable('../files') ? 'Writable' : 'Not writable',
+                'ok' => is_writable('../files')
             ]
         ]);
     }

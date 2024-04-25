@@ -22,6 +22,14 @@
     dest: "{{ INSTALL_DIR }}/server"
 
 
+- name: set permissions
+  file:
+    path: "{{ INSTALL_DIR }}/files"
+    group: www-data
+    mode: g+w
+  become: True
+
+
 - name: deploy frontend
   unarchive:
     src: ../client.tar.gz
