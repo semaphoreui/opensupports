@@ -142,7 +142,7 @@ class CommentController extends Controller {
         $isStaff = array_key_exists('staff', $recipient) && $recipient['staff'];
 
         $url = Setting::getSetting('url')->getValue([
-            'ticketAuthorId' => $this->ticket->owner->id,
+            'ticketAuthorId' => $this->ticket->author_id,
         ]);
 
         if(!Controller::isLoginMandatory() && !$isStaff){

@@ -96,7 +96,7 @@ class CloseController extends Controller {
             'ticketNumber' => $this->ticket->ticketNumber,
             'title' => $this->ticket->title,
             'url' => Setting::getSetting('url')->getValue([
-                'ticketAuthorId' => $this->$this->ticket->auther->id,
+                'ticketAuthorId' => $this->$this->ticket->auther_id,
             ])
         ]);
 
