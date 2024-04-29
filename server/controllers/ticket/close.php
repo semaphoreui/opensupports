@@ -95,7 +95,9 @@ class CloseController extends Controller {
             'name' => ($this->ticket->author) ? $this->ticket->author->name : $this->ticket->authorName,
             'ticketNumber' => $this->ticket->ticketNumber,
             'title' => $this->ticket->title,
-            'url' => Setting::getSetting('url')->getValue()
+            'url' => Setting::getSetting('url')->getValue([
+                'ticketAuthorId' => $this->$this->ticket->auther->id,
+            ])
         ]);
 
         $mailSender->send();

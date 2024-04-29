@@ -48,6 +48,7 @@ class CreateController extends Controller {
     private $departmentId;
     private $language;
     private $ticketNumber;
+    private $ticketAuthorId;
     private $email;
     private $name;
     private $apiKey;
@@ -93,7 +94,7 @@ class CreateController extends Controller {
     }
 
     public function handler() {
-        
+
         $session = Session::getInstance();
         if($session->isTicketSession())  {
             $session->clearSessionData();
@@ -106,19 +107,19 @@ class CreateController extends Controller {
         $this->email = Controller::request('email');
         $this->name = Controller::request('name');
         $this->apiKey = APIKey::getDataStore(Controller::request('apiKey'), 'token');
-        
+
         if(!Controller::isStaffLogged() && Department::getDataStore($this->departmentId)->private) {
             throw new Exception(ERRORS::INVALID_DEPARTMENT);
         }
-        
+
         if(!Staff::getUser($this->email,'email')->isNull() || $this->isEmailInvalid()) {
             throw new Exception(ERRORS::INVALID_EMAIL);
         }
-        
+
         if(!Controller::isLoginMandatory() && !Controller::isStaffLogged() && !Controller::isUserLogged()  && User::getUser($this->email, 'email')->isNull()){
             $this->createNewUser();
         }
-        
+
         $this->storeTicket();
 
         if(!Controller::isLoginMandatory() && !Controller::isUserLogged()) {
@@ -131,9 +132,9 @@ class CreateController extends Controller {
                 $this->sendMailStaff($staff->email);
             }
         }
-        
+
         Log::createLog('CREATE_TICKET', $this->ticketNumber);
-        
+
         if(!$this->apiKey->isNull() && $this->apiKey->shouldReturnTicketNumber){
             Response::respondSuccess([
                 'ticketNumber' => $this->ticketNumber
@@ -151,9 +152,9 @@ class CreateController extends Controller {
     }
 
     private function createNewUser() {
-        
+
         $signupController = new SignUpController(true);
-        
+
         Controller::setDataRequester(function ($key) {
             switch ($key) {
                 case 'email':
@@ -162,7 +163,7 @@ class CreateController extends Controller {
                     return Hashing::generateRandomToken();
                 case 'name':
                     return $this->name;
-                case 'indirectSignUp' : 
+                case 'indirectSignUp' :
                     return true;
             }
 
@@ -215,6 +216,7 @@ class CreateController extends Controller {
         $ticket->store();
 
         $this->ticketNumber = $ticket->ticketNumber;
+        $this->ticketAuthorId = $author->id;
     }
 
     private function getCorrectLanguage() {
@@ -224,11 +226,11 @@ class CreateController extends Controller {
             return Setting::getSetting('language')->getValue();
         }
     }
-    
+
     private function getCorrectDepartmentId(){
         $defaultDepartmentId = Setting::getSetting('default-department-id')->getValue();
         $isLocked = Setting::getSetting('default-is-locked')->getValue();
-        $validDepartment = Department::getDataStore($defaultDepartmentId)->id; 
+        $validDepartment = Department::getDataStore($defaultDepartmentId)->id;
         if (Controller::isStaffLogged()) {
             if ($this->departmentId) $validDepartment = $this->departmentId;
         } else {
@@ -238,7 +240,7 @@ class CreateController extends Controller {
     }
 
     private function getAuthor() {
-        if (!Controller::getLoggedUser()->isNull()) { 
+        if (!Controller::getLoggedUser()->isNull()) {
             return Controller::getLoggedUser();
         } else {
             return User::getUser($this->email, 'email');
@@ -253,7 +255,9 @@ class CreateController extends Controller {
             'name' => $this->name,
             'ticketNumber' => $this->ticketNumber,
             'title' => $this->title,
-            'url' => Setting::getSetting('url')->getValue()
+            'url' => Setting::getSetting('url')->getValue([
+                'ticketAuthorId' => $this->ticketAuthorId,
+            ]),
         ]);
 
         $mailSender->send();
