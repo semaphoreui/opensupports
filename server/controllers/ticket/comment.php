@@ -87,6 +87,14 @@ class CommentController extends Controller {
             $this->sendMail($ticketAuthor);
         }
 
+        if($this->ticket->author_email) {
+            $this->sendMail([
+                'email' => $this->ticket->author_email,
+                'name' => $this->ticket->author_name,
+                'staff' => true
+            ]);
+        }
+
         if($this->ticket->owner && !$isOwner) {
             $this->sendMail([
                 'email' => $this->ticket->owner->email,
@@ -150,12 +158,12 @@ class CommentController extends Controller {
 
         $mailSender->send();
     }
-    
+
     private function getImagePaths() {
         if(!$this->imagePaths){
             $this->imagePaths = $this->uploadImages(Controller::isStaffLogged());
         }
-        
+
         return $this->imagePaths;
     }
 }

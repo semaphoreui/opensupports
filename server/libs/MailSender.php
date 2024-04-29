@@ -68,6 +68,8 @@ class MailSender {
             $this->mailerInstance->isSMTP();
             $this->mailerInstance->Host = $this->mailOptions['smtp-host'];
             if($this->mailOptions['smtp-user'] !== '') {
+                $this->mailerInstance->SMTPSecure = 'tls';
+                $this->mailerInstance->Port = 587;
                 $this->mailerInstance->SMTPAuth = true;
                 $this->mailerInstance->Username = $this->mailOptions['smtp-user'];
                 $this->mailerInstance->Password = $this->mailOptions['smtp-pass'];
