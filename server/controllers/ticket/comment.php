@@ -87,7 +87,7 @@ class CommentController extends Controller {
             $this->sendMail($ticketAuthor);
         }
 
-        if($this->ticket->author_email) {
+        if($this->ticket->author_email && $this->ticket->author_email !== $ticketAuthor['email']) {
             $this->sendMail([
                 'email' => $this->ticket->author_email,
                 'name' => $this->ticket->author_name,

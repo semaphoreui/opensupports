@@ -90,16 +90,30 @@ class CloseController extends Controller {
     private function sendMail() {
         $mailSender = MailSender::getInstance();
 
-        $mailSender->setTemplate(MailTemplate::TICKET_CLOSED, [
-            'to' => ($this->ticket->author) ? $this->ticket->author->email : $this->ticket->authorEmail,
-            'name' => ($this->ticket->author) ? $this->ticket->author->name : $this->ticket->authorName,
-            'ticketNumber' => $this->ticket->ticketNumber,
-            'title' => $this->ticket->title,
-            'url' => Setting::getSetting('url')->getValue([
-                'ticketAuthorId' => $this->$this->ticket->auther_id,
-            ])
-        ]);
+        if ($this->ticket->author) {
+            $mailSender->setTemplate(MailTemplate::TICKET_CLOSED, [
+                'to' => $this->ticket->author->email,
+                'name' => $this->ticket->author->name,
+                'ticketNumber' => $this->ticket->ticketNumber,
+                'title' => $this->ticket->title,
+                'url' => Setting::getSetting('url')->getValue([
+                    'ticketAuthorId' => $this->$this->ticket->auther_id,
+                ])
+            ]);
+            $mailSender->send();
+        }
 
-        $mailSender->send();
+        if ($this->ticket->authorEmail && (!$this->ticket->author || $this->ticket->authorEmail !== $this->ticket->author->email)) {
+            $mailSender->setTemplate(MailTemplate::TICKET_CLOSED, [
+                'to' => $this->ticket->authorEmail,
+                'name' => $this->ticket->authorName,
+                'ticketNumber' => $this->ticket->ticketNumber,
+                'title' => $this->ticket->title,
+                'url' => Setting::getSetting('url')->getValue([
+                    'ticketAuthorId' => $this->$this->ticket->auther_id,
+                ])
+            ]);
+            $mailSender->send();
+        }
     }
 }
